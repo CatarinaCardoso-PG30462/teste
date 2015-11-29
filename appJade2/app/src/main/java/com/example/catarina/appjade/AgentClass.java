@@ -52,7 +52,9 @@ public class AgentClass extends Agent {
         @Override
         public void action() {
             ACLMessage msg = myAgent.receive();
+            System.out.println("ESPERANDO");
             if (msg != null) {
+                System.out.println("OLA GATA");
                 ACLMessage reply = msg.createReply();
 
                 if (msg.getPerformative() == ACLMessage.REQUEST) {
