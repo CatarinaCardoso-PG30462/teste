@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -29,15 +33,19 @@ import android.widget.TextView;
 /**
  * Created by Catarina on 23/11/2015.
  */
-public class ActivityAgent extends Activity {
+public class ActivityAgent extends Activity{
+
+
     private MicroRuntimeServiceBinder microRuntimeServiceBinder;
     private ServiceConnection serviceConnection;
+    Info info=new Info();
 
     private boolean ativo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        Gcontext.c=this;
         ativo=false;
         setContentView(R.layout.activityagent);
         checkButton();
@@ -161,11 +169,11 @@ public class ActivityAgent extends Activity {
                             final RuntimeCallback<AgentController> agentStartupCallback) {
         microRuntimeServiceBinder.startAgent(nickname,
                 AgentClass.class.getName(),
-                new Object[] { getApplicationContext() },
+                new Object[]{getApplicationContext()},
                 new RuntimeCallback<Void>() {
                     @Override
                     public void onSuccess(Void thisIsNull) {
-                        Log.i("agent","Successfully start of the agent...");
+                        Log.i("agent", "Successfully start of the agent...");
                         try {
                             agentStartupCallback.onSuccess(MicroRuntime
                                     .getAgent(nickname));
@@ -178,7 +186,7 @@ public class ActivityAgent extends Activity {
                     @Override
                     public void onFailure(Throwable throwable) {
                         //	logger.log(Level.SEVERE, "Failed to start the "								+ ChatClientAgent.class.getName() + "...");
-                        Log.i("agent","Unsuccessfully start of the agent...");
+                        Log.i("agent", "Unsuccessfully start of the agent...");
                         agentStartupCallback.onFailure(throwable);
                     }
                 });
@@ -195,4 +203,5 @@ public class ActivityAgent extends Activity {
             //myHandler.postError(getString(R.string.msg_nickname_in_use));
         }
     };
+
 }

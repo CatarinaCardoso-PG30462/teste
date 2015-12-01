@@ -140,17 +140,22 @@ public class Sensor{
         c.registerReceiver(batteryLevelReceiver, batteryLevelFilter);
     }
 
+    private void getLocation(){
+        Location loc=null;
+        LocationManager locationManager = (LocationManager)c.getSystemService(Context.LOCATION_SERVICE);
+        try {
+            loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }catch(Exception e){}
+        info.setLocalizacao("LA" + loc.getLatitude()+"LO"+loc.getLongitude());
+    }
+
     public Info getAll(){
-        locationManager = (LocationManager)c.getSystemService(Context.LOCATION_SERVICE);
+        info=new Info();
+        //Location
+        getLocation();
 
         //Bateria
         getBatteryPercentage();
-
-        //Força Sinal tele
-        psListener = new myPhoneStateListener();
-        telephonyManager = (TelephonyManager)c.getSystemService(Context.TELEPHONY_SERVICE);
-        telephonyManager.listen(psListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
-        SignalStrength signalStrength;
 
         //Força Sinal wifi
         getWifiStr();

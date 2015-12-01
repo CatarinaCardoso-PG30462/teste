@@ -1,5 +1,7 @@
 package com.example.catarina.appjade;
 
+import android.content.Context;
+
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
@@ -55,6 +57,9 @@ public class AgentClass extends Agent {
             System.out.println("ESPERANDO");
             if (msg != null) {
                 System.out.println("OLA GATA");
+                Context c=Gcontext.c;
+                Sensor s=new Sensor(c);
+                Info info=s.getAll();
                 ACLMessage reply = msg.createReply();
 
                 if (msg.getPerformative() == ACLMessage.REQUEST) {
@@ -62,51 +67,37 @@ public class AgentClass extends Agent {
                         myAgent.doDelete();
                     } else if (msg.getContent().equals("0")) {
                         System.out.println("0");
-                        ActivityAgent f = new ActivityAgent();
-                        Info info = f.getInformacao();
                         reply.setContent("mblw/+/" + info.getBateria() + "/+/" + info.getLocalizacao() + "/+/" + info.getWifi());
                         reply.setPerformative(ACLMessage.INFORM);
                         myAgent.send(reply);
                     } else if (msg.getContent().equals("1")) {
                         System.out.println("1");
-                        ActivityAgent f = new ActivityAgent();
-                        Info info = f.getInformacao();
                         reply.setContent("mb/+/" + info.getBateria());
                         reply.setPerformative(ACLMessage.INFORM);
                         myAgent.send(reply);
 
                     } else if (msg.getContent().equals("2")) {
                         System.out.println("2");
-                        ActivityAgent f = new ActivityAgent();
-                        Info info = f.getInformacao();
                         reply.setContent("ml/+/" + info.getLocalizacao());
                         reply.setPerformative(ACLMessage.INFORM);
                         myAgent.send(reply);
                     } else if (msg.getContent().equals("3")) {
                         System.out.println("3");
-                        ActivityAgent f = new ActivityAgent();
-                        Info info = f.getInformacao();
                         reply.setContent("mw/+/" + info.getWifi());
                         reply.setPerformative(ACLMessage.INFORM);
                         myAgent.send(reply);
                     } else if (msg.getContent().equals("4")) {
                         System.out.println("4");
-                        ActivityAgent f = new ActivityAgent();
-                        Info info = f.getInformacao();
                         reply.setContent("mbl/+/" + info.getBateria() + "/+/" + info.getLocalizacao());
                         reply.setPerformative(ACLMessage.INFORM);
                         myAgent.send(reply);
                     } else if (msg.getContent().equals("5")) {
                         System.out.println("5");
-                        ActivityAgent f = new ActivityAgent();
-                        Info info = f.getInformacao();
                         reply.setContent("mbw/+/" + info.getBateria() + "/+/" + info.getWifi());
                         reply.setPerformative(ACLMessage.INFORM);
                         myAgent.send(reply);
                     } else if (msg.getContent().equals("6")) {
                         System.out.println("6");
-                        ActivityAgent f = new ActivityAgent();
-                        Info info = f.getInformacao();
                         reply.setContent("mlw/+/" + info.getLocalizacao() + "/+/" + info.getWifi());
                         reply.setPerformative(ACLMessage.INFORM);
                         myAgent.send(reply);
