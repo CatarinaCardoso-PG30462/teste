@@ -39,6 +39,80 @@ public class ActivityAgent extends Activity{
     private MicroRuntimeServiceBinder microRuntimeServiceBinder;
     private ServiceConnection serviceConnection;
     Info info=new Info();
+    private LocationManager locationManager;
+
+
+    private final LocationListener gpsLocationListener =new LocationListener(){
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+        }
+
+        @Override
+        public void onLocationChanged(Location location) {
+            try {
+                locationManager.removeUpdates(networkLocationListener);
+            }catch(Exception e){}
+
+        }
+    };
+
+    private final LocationListener networkLocationListener =
+            new LocationListener(){
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras){
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+
+                @Override
+                public void onLocationChanged(Location location) {
+
+                }
+            };
+
+
+     @Override
+       protected void onResume() {
+        super.onResume();
+        try {
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, 5000, 0,
+                    networkLocationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    3000, 0, gpsLocationListener);
+        }catch (Exception e){}
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            locationManager.removeUpdates(networkLocationListener);
+            locationManager.removeUpdates(gpsLocationListener);
+        }catch (Exception e){}
+    }
+
+
+
 
     private boolean ativo;
     @Override
@@ -47,6 +121,7 @@ public class ActivityAgent extends Activity{
         super.onCreate(savedInstanceState);
         Gcontext.c=this;
         ativo=false;
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         setContentView(R.layout.activityagent);
         checkButton();
         Button button = (Button) findViewById(R.id.button1);

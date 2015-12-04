@@ -102,10 +102,10 @@ public class AgentClass extends Agent {
                         reply.setPerformative(ACLMessage.INFORM);
                         myAgent.send(reply);
                     }
-                    block();
+
                 }
             }
-
+            block();
         }
     }
 }

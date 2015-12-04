@@ -133,7 +133,7 @@ public class Sensor{
                     level = (currentLevel * 100) / scale;
                 }
 
-                info.setBateria("Battery: " + level + "%");
+                info.setBateria("" + level);
             }
         };
         IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -145,7 +145,17 @@ public class Sensor{
         LocationManager locationManager = (LocationManager)c.getSystemService(Context.LOCATION_SERVICE);
         try {
             loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        }catch(Exception e){}
+        }catch(Exception e){
+            System.out.println("Break");
+        }
+        if(loc==null){
+            try {
+                loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }catch(Exception e){
+                System.out.println("Break");
+            }
+        }
+
         info.setLocalizacao("LA" + loc.getLatitude()+"LO"+loc.getLongitude());
     }
 
