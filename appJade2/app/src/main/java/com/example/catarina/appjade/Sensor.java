@@ -124,15 +124,18 @@ public class Sensor{
         BroadcastReceiver batteryLevelReceiver = new BroadcastReceiver() {
 
             public void onReceive(Context context, Intent intent) {
-
+                int level;
                 context.unregisterReceiver(this);
-                int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-                int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-                int level = -1;
-                if (currentLevel >= 0 && scale > 0) {
-                    level = (currentLevel * 100) / scale;
+                if(intent==null){
+                    level=0;
+                }else {
+                    int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+                    int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+                    level = -1;
+                    if (currentLevel >= 0 && scale > 0) {
+                        level = (currentLevel * 100) / scale;
+                    }
                 }
-
                 info.setBateria("" + level);
             }
         };

@@ -160,6 +160,7 @@ public class ActivityAgent extends Activity{
                 }
             }
             else{
+
                Log.i("desligar","desligar");
             }
         }
