@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppJade</string>
+    <string name="app_name">Jade Android</string>
     <string name="action_settings">Settings</string>
     <string name="label_name">Agent Name</string>
     <string name="label_host">Host</string>

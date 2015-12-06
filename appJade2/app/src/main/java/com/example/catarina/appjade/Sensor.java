@@ -149,13 +149,13 @@ public class Sensor{
         try {
             loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }catch(Exception e){
-            System.out.println("Break");
+           // System.out.println("Break");
         }
         if(loc==null){
             try {
                 loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             }catch(Exception e){
-                System.out.println("Break");
+         //       System.out.println("Break");
             }
         }
 

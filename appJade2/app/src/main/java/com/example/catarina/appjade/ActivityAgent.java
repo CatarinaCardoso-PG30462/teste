@@ -18,6 +18,9 @@ import android.widget.Button;
 
 
 import java.util.logging.Level;
+
+import jade.android.RuntimeServiceBinder;
+import jade.core.Agent;
 import jade.util.leap.Properties;
 import jade.android.AndroidHelper;
 import jade.android.MicroRuntimeService;
@@ -36,11 +39,11 @@ import android.widget.TextView;
 public class ActivityAgent extends Activity{
 
 
-    private MicroRuntimeServiceBinder microRuntimeServiceBinder;
+    public MicroRuntimeServiceBinder microRuntimeServiceBinder;
     private ServiceConnection serviceConnection;
     Info info=new Info();
     private LocationManager locationManager;
-
+    public ActivityAgent act;
 
     private final LocationListener gpsLocationListener =new LocationListener(){
 
@@ -112,7 +115,9 @@ public class ActivityAgent extends Activity{
     }
 
 
-
+    public MicroRuntimeServiceBinder getMicro(){
+        return microRuntimeServiceBinder;
+    }
 
     private boolean ativo;
     @Override
@@ -120,6 +125,7 @@ public class ActivityAgent extends Activity{
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         Gcontext.c=this;
+
         ativo=false;
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         setContentView(R.layout.activityagent);
@@ -154,13 +160,14 @@ public class ActivityAgent extends Activity{
                     String host = settings.getString("defaultHost", "");
                     String port = settings.getString("defaultPort", "");
                     String name = settings.getString("defaultName", "");
-                    startChat(name, host, port, agentStartupCallback);
+                    startApp(name, host, port, agentStartupCallback);
                 } catch (Exception ex) {
 
                 }
             }
             else{
-
+                AgentClass g=new AgentClass();
+                g.DesligarAgent();
                Log.i("desligar","desligar");
             }
         }
@@ -172,7 +179,7 @@ public class ActivityAgent extends Activity{
         Sensor s=new Sensor(this);
         return s.getAll();
     }
-    public void startChat(final String nickname, final String host,
+    public void startApp(final String nickname, final String host,
                           final String port,
                           final RuntimeCallback<AgentController> agentStartupCallback) {
 
@@ -191,7 +198,7 @@ public class ActivityAgent extends Activity{
 
         // Emulator: this is not really needed on a real device
         profile.setProperty(Profile.LOCAL_PORT, "2000");
-        System.out.println("aqui");
+       // System.out.println("aqui");
         if (microRuntimeServiceBinder == null) {
             serviceConnection = new ServiceConnection() {
 
@@ -203,7 +210,7 @@ public class ActivityAgent extends Activity{
                 };
 
                 public void onServiceDisconnected(ComponentName className) {
-                    System.out.println("falhou");
+                  //  System.out.println("falhou");
                     microRuntimeServiceBinder = null;
 
                 }
@@ -212,7 +219,7 @@ public class ActivityAgent extends Activity{
             Boolean aaa=bindService(new Intent(getApplicationContext(),
                             MicroRuntimeService.class), serviceConnection,
                     Context.BIND_AUTO_CREATE);
-            System.out.println(aaa);
+            //System.out.println(aaa);
         } else {
 
             startContainer(nickname, profile, agentStartupCallback);
@@ -226,20 +233,22 @@ public class ActivityAgent extends Activity{
                     new RuntimeCallback<Void>() {
                         @Override
                         public void onSuccess(Void thisIsNull) {
-                            Log.i("Container","Successfully start of the container...");
+                            Log.i("Container", "Successfully start of the container...");
                             startAgent(nickname, agentStartupCallback);
                         }
 
                         @Override
                         public void onFailure(Throwable throwable) {
                             //logger.log(Level.SEVERE, "Failed to start the container...");
-                            Log.i("Container","Unsuccessfully start of the container...");
+                            Log.i("Container", "Unsuccessfully start of the container...");
                         }
                     });
         } else {
             startAgent(nickname, agentStartupCallback);
         }
     }
+
+
 
     private void startAgent(final String nickname,
                             final RuntimeCallback<AgentController> agentStartupCallback) {
